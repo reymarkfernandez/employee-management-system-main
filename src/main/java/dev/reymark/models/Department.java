@@ -2,8 +2,26 @@ package dev.reymark.models;
 
 import dev.sol.core.application.FXModel;
 import dev.sol.core.properties.beans.FXStringProperty;
+import javafx.scene.control.ListCell;
 
 public class Department extends FXModel {
+    public static class LIST_CELL extends ListCell<Department> {
+        @Override
+        protected void updateItem(Department department, boolean empty) {
+            super.updateItem(department, empty);
+
+            if (department == null || empty) {
+                setText(null);
+                setGraphic(null);
+                // setGraphic()
+                return;
+            }
+        }
+
+    }
+
+
+
     private FXStringProperty emp_id;
     private FXStringProperty name;
     private FXStringProperty location;

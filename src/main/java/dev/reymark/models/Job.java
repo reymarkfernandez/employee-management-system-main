@@ -7,4 +7,6 @@ public enum Job {
     ANALYST,
     CLERK;
     
+
+
 }

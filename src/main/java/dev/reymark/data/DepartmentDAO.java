@@ -27,7 +27,7 @@ public class DepartmentDAO {
         return null;
     }
 
-    public List<Department> getDepartmentList() {
+    public static List<Department> getDepartmentList() {
         CachedRowSet crs = App.DB_EMPLOYEE.select_all(TABLE);
         List<Department> list = new LinkedList<>();
 
@@ -41,7 +41,7 @@ public class DepartmentDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list;
+        return list; 
 
     }
 
