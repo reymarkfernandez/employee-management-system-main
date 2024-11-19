@@ -1,7 +1,7 @@
 package dev.reymark.models;
 
 public enum Job {
-    PRESEDENT,
+    PRESIDENT,
     MANAGER,
     SALESMAN,
     ANALYST,

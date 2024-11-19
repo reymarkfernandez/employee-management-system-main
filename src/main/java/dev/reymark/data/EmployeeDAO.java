@@ -21,30 +21,28 @@ public class EmployeeDAO {
 
     private static final ObservableList<Department> departmentlist = App.COLLECTIONS_REGISTRY.getList("DEPARTMENT");
 
-    private Employee data(CachedRowSet crs) {
+    private static Employee data(CachedRowSet crs) {
         try {
             String id = crs.getString("emp_id");
             String name = crs.getString("emp_name");
-            Job job = Job.valueOf(crs.getString("job_name"));
+            Job job = Job.valueOf(crs.getString("job_name").toUpperCase().trim());
+            Employee manager = new Employee(crs.getString("manager_id"));
             LocalDate hireDate = CoreDateUtils.parse(
                     crs.getString("hire_date"),
-                    "yyyy-MM-dd");
+                     "yyyy-MM-dd");
             long salary = crs.getLong("salary");
             long commission = crs.getLong("commission");
             Department department = departmentlist.stream()
                     .filter(dept -> {
                         try {
                             return dept.getDepId().equals(crs.getString("dep_id"));
-
                         } catch (SQLException e) {
                             e.printStackTrace();
-
                         }
                         return false;
-                    })
-                    .findFirst().get();
+                    }).findFirst().get();
 
-            return new Employee(id, name, job, hireDate, salary, commission, department);
+            return new Employee(id, name, job, manager, hireDate, salary, commission, department);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -53,27 +51,31 @@ public class EmployeeDAO {
     }
 
     public static List<Employee> getEmployeeList() {
-        CachedRowSet crs = DB.select(TABLE);
-        List<Employee> lsit = new LinkedList<>();
+        CachedRowSet crs = DB.select_all(TABLE);
+        List<Employee> list = new LinkedList<>();
 
         try {
             while (crs.next()) {
-                Employee employee = data(crs);
+                Employee employee = data(crs); 
                 if (employee != null)
                     list.add(employee);
-            }
 
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }list.forEach(employee->
 
-    {
-        String manager_id = employee.getManager().getEmpId();
-        employee.setManager(
-               list.stream()
-                       .filter(e -> e.getEmpId().equals(manager_id))
-                       .findFirst().get());
-      employee.rebaseline();
-    });return list;)
+        list.forEach(employee -> {
+            String manager_id = employee.getManager().getEmpID();
+            if (!manager_id.isEmpty())
+            employee.setManager(
+                    list.stream()
+                            .filter(e -> e.getEmpID().equals(manager_id))
+                            .findFirst().get());
+            employee.rebaseline();
+
+        });
+
+        return list;
+    }
 }

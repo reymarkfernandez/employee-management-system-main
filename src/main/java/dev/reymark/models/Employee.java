@@ -1,28 +1,31 @@
 package dev.reymark.models;
 
 import java.time.LocalDate;
+
 import dev.sol.core.application.FXModel;
 import dev.sol.core.properties.beans.FXLongProperty;
+import dev.sol.core.properties.beans.FXObjectProperty;
 import dev.sol.core.properties.beans.FXStringProperty;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
-import dev.sol.core.properties.beans.FXObjectProperty;
 
 public class Employee extends FXModel {
-    public static class DEPARTMENT_TABLECELL extends TableCell<Department, Employee> {
+
+    public static class DEPARTEMENT_TABLECELL extends TableCell<Employee, Department> {
         @Override
-        protected void updateItem(Employee item, boolean empty) {
+        protected void updateItem(Department item, boolean empty) {
             super.updateItem(item, empty);
 
             if (item == null || empty) {
                 setText(null);
                 setGraphic(null);
-                // setGraphic()
                 return;
+
             }
 
-            setGraphic(new Label(item.getDepartment().getName()));
+            setGraphic(new Label(item.getName()));
         }
+
     }
 
     private FXStringProperty emp_id;
@@ -35,20 +38,20 @@ public class Employee extends FXModel {
     private FXObjectProperty<Department> department;
 
     public Employee(String emp_id) {
-        this(emp_id,  job, manager, hireDate, null, null, Department);
+        this(emp_id, null, null, null, null, 0, 0, null);
     }
 
-    public Employee(String emp_id, String name, Job job, Employee employee, LocalDate hire_date, Long salary,
-            Long commission, Department department) {
+    public Employee(String emp_id, String name, Job job, Employee manager, LocalDate hire_date, long salary,
+            long commision,
+            Department department) {
         this.emp_id = new FXStringProperty(emp_id);
         this.name = new FXStringProperty(name);
         this.job = new FXObjectProperty<>(job);
-        this.manager = new FXObjectProperty<>();
+        this.manager = new FXObjectProperty<>(manager);
         this.hire_date = new FXObjectProperty<>(hire_date);
         this.salary = new FXLongProperty(salary);
-        this.commission = new FXLongProperty(commission);
+        this.commission = new FXLongProperty(commision);
         this.department = new FXObjectProperty<>(department);
-
 
         track_properties(this.emp_id,
                 this.name,
@@ -58,133 +61,111 @@ public class Employee extends FXModel {
                 this.salary,
                 this.commission,
                 this.department);
-
     }
 
-    public Employee(String id, String name2, Job job2, LocalDate hireDate, long salary2, long commission2,
-            Department department2) {
-        //TODO Auto-generated constructor stub
-    }
-
-    public FXStringProperty empIdProperty() {
+    public FXStringProperty emp_idProperty() {
         return emp_id;
-
     }
 
-    public String getEmpId() {
-        return empIdProperty().get();
-
+    public String getEmpID() {
+        return emp_idProperty().get();
     }
 
-    public void setEmpId(String emp_id) {
-        empIdProperty().set(emp_id);
-
+    public void setEmpId(String EmpID) {
+        emp_idProperty().set(EmpID);
     }
 
     public FXStringProperty nameProperty() {
         return name;
-
     }
 
     public String getName() {
         return nameProperty().get();
-
     }
 
-    public void setName(String name) {
-        nameProperty().set(name);
-
+    public void setName(String Name) {
+        nameProperty().set(Name);
     }
 
     public FXObjectProperty<Job> jobProperty() {
         return job;
-
     }
 
     public Job getJob() {
         return jobProperty().get();
-
     }
 
-    public void setJob(Job job) {
-        jobProperty().set(job);
+    public void setJob(Job Job) {
+        jobProperty().set(Job);
     }
 
-    public FXObjectProperty<Employee> managerProperty() {
+    public FXObjectProperty<Employee> managerpProperty() {
         return manager;
-
     }
 
     public Employee getManager() {
-        return managerProperty().get();
-
+        return managerpProperty().get();
     }
 
-    public void setManager(Employee manager) {
-        managerProperty().set(manager);
+    public void setManager(Employee Manager) {
+        managerpProperty().set(Manager);
     }
 
     public FXObjectProperty<LocalDate> hire_dateProperty() {
         return hire_date;
-
     }
 
     public LocalDate getHireDate() {
         return hire_dateProperty().get();
-
     }
 
-    public void setHireDate(LocalDate hire_Date) {
-        hire_dateProperty().set(hire_Date);
+    public void setHireDate(LocalDate Hiredate) {
+        hire_dateProperty().set(Hiredate);
     }
 
     public FXLongProperty salaryProperty() {
         return salary;
-
     }
 
     public long getSalary() {
         return salaryProperty().get();
-
     }
 
-    public void setSalary(long salary) {
-        salaryProperty().set(salary);
+    public void setSalary(long Salary) {
+        salaryProperty().set(Salary);
     }
 
     public FXLongProperty commissionProperty() {
         return commission;
-
     }
 
-    public long getCommision() {
+    public long getCommission() {
         return commissionProperty().get();
-
     }
 
-    public void setCommission(long commission) {
-        commissionProperty().set(commission);
+    public void setCommission(long Commission) {
+        commissionProperty().set(Commission);
     }
 
     public FXObjectProperty<Department> departmentProperty() {
         return department;
-
     }
 
     public Department getDepartment() {
         return departmentProperty().get();
     }
 
-    public void setDepartment(Department department) {
-        departmentProperty().set(department);
+    public void setDepartment(Department Department) {
+        departmentProperty().set(getDepartment());
     }
 
     @Override
     public FXModel clone() {
-        Employee employee = new Employee(getEmpId(), getName(), getJob(), getManager(), getHireDate(), getSalary(),
-                getCommision(), getDepartment());
+        Employee employee = new Employee(getEmpID(), getName(), getJob(), getManager(), getHireDate(), getSalary(),
+                getCommission(), getDepartment());
         if (getManager() != null)
             employee.setManager(getManager());
+
         return employee;
     }
 
@@ -192,13 +173,14 @@ public class Employee extends FXModel {
     public void copy(FXModel arg0) {
         Employee c = (Employee) arg0;
 
-        setEmpId(c.getEmpId());
+        setEmpId(c.getEmpID());
         setName(c.getName());
         setJob(c.getJob());
         setManager(c.getManager());
         setHireDate(c.getHireDate());
         setDepartment(c.getDepartment());
         setSalary(c.getSalary());
-        setCommission(c.getCommision());
+        setCommission(c.getCommission());
     }
+
 }
