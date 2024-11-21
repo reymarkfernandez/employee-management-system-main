@@ -41,6 +41,10 @@ public class Employee extends FXModel {
         this(emp_id, null, null, null, null, 0, 0, null);
     }
 
+    public Employee(String emp_id, String name, Job job, Employee manager, Department department) {
+        this(emp_id, name, job, manager, LocalDate.now(), 0, 0, department);
+    }
+
     public Employee(String emp_id, String name, Job job, Employee manager, LocalDate hire_date, long salary,
             long commision,
             Department department) {

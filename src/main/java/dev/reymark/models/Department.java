@@ -2,6 +2,7 @@ package dev.reymark.models;
 
 import dev.sol.core.application.FXModel;
 import dev.sol.core.properties.beans.FXStringProperty;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 
 public class Department extends FXModel {
@@ -16,6 +17,9 @@ public class Department extends FXModel {
                 // setGraphic()
                 return;
             }
+            
+            // setText(department.getName());
+            setGraphic(new Label(department.getName()));
         }
 
     }

@@ -4,11 +4,9 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -18,34 +16,31 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="759.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.reymark.app.RootController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="737.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.reymark.app.RootController">
    <left>
-      <VBox prefHeight="460.0" prefWidth="231.0" spacing="10.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="492.0" prefWidth="233.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <GridPane hgap="15.0" prefHeight="206.0" prefWidth="221.0" vgap="20.0">
+            <GridPane hgap="15.0" prefHeight="205.0" prefWidth="225.0" vgap="20.0">
                <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="10.0" prefWidth="82.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="10.0" prefWidth="70.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.0" minWidth="10.0" prefWidth="64.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="10.0" prefWidth="114.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label text="FirstName" />
-                  <TextField promptText="FirstName" GridPane.columnIndex="1" />
-                  <Label text="Surname" GridPane.rowIndex="1" />
-                  <TextField promptText="Surname" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label text="Job" GridPane.rowIndex="2" />
-                  <TextField prefHeight="25.0" prefWidth="84.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label text="Manager" GridPane.rowIndex="3" />
-                  <Label prefHeight="17.0" prefWidth="75.0" text="Department" GridPane.rowIndex="4" />
-                  <ComboBox fx:id="departmentDropdown" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label text="Name" />
+                  <TextField fx:id="nameField" promptText="Name" GridPane.columnIndex="1" />
+                  <Label text="Job" GridPane.rowIndex="1" />
+                  <TextField prefHeight="25.0" prefWidth="84.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Manager" GridPane.rowIndex="2" />
+                  <Label prefHeight="17.0" prefWidth="75.0" text="Department" GridPane.rowIndex="3" />
+                  <ComboBox fx:id="departmentField" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <ComboBox fx:id="managerField" prefHeight="25.0" prefWidth="102.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ComboBox fx:id="jobField" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -60,7 +55,7 @@
                </padding>
             </HBox>
             <HBox prefHeight="183.0" prefWidth="211.0" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="142.0" text="Add Employee">
+            <Button mnemonicParsing="false" onAction="#handleAddEmployee" prefHeight="25.0" prefWidth="142.0" text="Add Employee">
                <graphic>
                   <FontIcon />
                </graphic>
@@ -74,7 +69,7 @@
    <center>
       <VBox prefHeight="413.0" prefWidth="543.0" BorderPane.alignment="CENTER">
          <children>
-            <GridPane hgap="15.0" prefHeight="122.0" prefWidth="508.0" vgap="15.0">
+            <GridPane hgap="15.0" prefHeight="119.0" prefWidth="446.0" vgap="15.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -88,45 +83,37 @@
                   <VBox prefHeight="62.0" prefWidth="163.0" spacing="5.0">
                      <children>
                         <Label text="Name ID" />
-                        <TextField prefHeight="36.0" prefWidth="90.0" />
+                        <TextField fx:id="filteredEmployeeField" prefHeight="24.0" prefWidth="143.0" />
                      </children>
                   </VBox>
                   <VBox prefHeight="65.0" prefWidth="163.0" spacing="5.0" GridPane.columnIndex="1">
                      <children>
                         <Label text="New Manager" />
-                        <TextField prefWidth="150.0" />
+                        <ComboBox fx:id="newManagerField" prefWidth="150.0" />
                      </children>
                   </VBox>
-                  <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="156.0" text="Search" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#handleSearchEmployee" prefHeight="36.0" prefWidth="156.0" text="Search" GridPane.rowIndex="1" />
                   <HBox prefHeight="52.0" prefWidth="159.0" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="101.0" text="Update" />
-                        <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="95.0" text="Delete" />
+                        <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="79.0" text="Delete" />
                      </children>
                      <padding>
                         <Insets top="10.0" />
                      </padding>
                   </HBox>
-                  <Button mnemonicParsing="false" text="Search All Employees" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#handleSearchAllEmployee" prefHeight="25.0" prefWidth="143.0" text="Search All Employees" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                </children>
             </GridPane>
-            <ScrollPane prefHeight="376.0" prefWidth="508.0">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="378.0" prefWidth="508.0">
-                     <children>
-                        <TableView fx:id="employeeTable" layoutX="-1.0" layoutY="14.0" prefHeight="403.0" prefWidth="502.0">
-                           <columns>
-                              <TableColumn fx:id="empIdColumn" prefWidth="76.0" text="ID" />
-                              <TableColumn fx:id="empNameColumn" minWidth="83.0" prefWidth="94.0" text="Name" />
-                              <TableColumn fx:id="empJobColumn" prefWidth="99.0" text="Email" />
-                              <TableColumn fx:id="empManagerColumn" minWidth="0.0" prefWidth="95.0" text="Manager" />
-                              <TableColumn fx:id="departmentColumn" prefWidth="137.0" text="Department" />
-                           </columns>
-                        </TableView>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </ScrollPane>
+            <TableView fx:id="employeeTable" prefHeight="370.0" prefWidth="542.0" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="empIdColumn" prefWidth="76.0" text="ID" />
+                  <TableColumn fx:id="empNameColumn" minWidth="83.0" prefWidth="94.0" text="Name" />
+                  <TableColumn fx:id="empJobColumn" prefWidth="99.0" text="Email" />
+                  <TableColumn fx:id="empManagerColumn" minWidth="0.0" prefWidth="95.0" text="Manager" />
+                  <TableColumn fx:id="departmentColumn" prefWidth="137.0" text="Department" />
+               </columns>
+            </TableView>
          </children>
       </VBox>
    </center>

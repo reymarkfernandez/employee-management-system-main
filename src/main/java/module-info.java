@@ -6,6 +6,7 @@ module reymark.employeeJBC {
     requires transitive core.db;
     requires javafx.base;
     requires core.util;
+    requires atlantafx.base;
 
     opens dev.reymark to javafx.fxml;
     opens dev.reymark.app to javafx.fxml;

@@ -1,6 +1,7 @@
 package dev.reymark.data;
 
 import java.sql.SQLException;
+import java.sql.Types;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +12,7 @@ import dev.reymark.App;
 import dev.reymark.models.Department;
 import dev.reymark.models.Employee;
 import dev.reymark.models.Job;
+import dev.sol.db.DBParam;
 import dev.sol.db.DBService;
 import dev.sol.util.CoreDateUtils;
 import javafx.collections.ObservableList;
@@ -49,13 +51,28 @@ public class EmployeeDAO {
         return null;
 
     }
+     private static DBParam[] paramList(Employee employee) {
+        List<DBParam> paramList = new LinkedList<>();
+        paramList.add(new DBParam(Types.VARCHAR, "emp_id", employee.getEmpID()));
+        paramList.add(new DBParam(Types.VARCHAR, "emp_name", employee.getName()));
+        paramList.add(new DBParam(Types.VARCHAR, "job_name", employee.getJob()));
+        paramList.add(new DBParam(Types.VARCHAR, "manager_id", employee.getManager().getEmpID()));
+        paramList.add(
+                new DBParam(Types.VARCHAR, "hire_date", CoreDateUtils.format(employee.getHireDate(), "yyyy-MM-dd")));
+        paramList.add(new DBParam(Types.BIGINT, "salary", employee.getSalary()));
+        paramList.add(new DBParam(Types.BIGINT, "commission", employee.getCommission()));
+        paramList.add(new DBParam(Types.VARCHAR, "dep_id", employee.getDepartment().getDepId()));
+        return paramList.toArray(new DBParam[0]);
+
+    }
+
 
     public static List<Employee> getEmployeeList() {
         CachedRowSet crs = DB.select_all(TABLE);
         List<Employee> list = new LinkedList<>();
 
         try {
-            while (crs.next()) {
+             while (crs.next()) {
                 Employee employee = data(crs); 
                 if (employee != null)
                     list.add(employee);
@@ -77,5 +94,10 @@ public class EmployeeDAO {
         });
 
         return list;
+    }
+
+    public static void insert(Employee employee) {
+
+        DB.insert(TABLE, paramList(employee));
     }
 }
