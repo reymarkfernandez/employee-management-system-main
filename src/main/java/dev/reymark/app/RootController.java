@@ -78,18 +78,24 @@ public class RootController extends FXController {
             Animations.flash(filteredEmployeeField).playFromStart();
             return;
         }
+
+        employeeFilteredList.setPredicate(employee -> {
+            return employee.getEmpID().trim().toUpperCase().contains(filteredEmployeeField.getText());
+        });
     }
 
     @FXML
     private void handleSearchAllEmployee() {
+        employeeFilteredList.setPredicate(p -> true);
     }
 
     private ObservableList<Department> department_masterList;
     private ObservableList<Employee> employee_masterList;
+
     private FilteredList<Employee> managerList;
+    private FilteredList<Employee> employeeFilteredList;
 
     private static class MANAGER_CELL extends ListCell<Employee> {
-
         @Override
         protected void updateItem(Employee item, boolean empty) {
             super.updateItem(item, empty);
@@ -105,13 +111,16 @@ public class RootController extends FXController {
     }
 
     @Override
-    protected void load_bindings() {
+    protected void load_fields() {
         employee_masterList = App.COLLECTIONS_REGISTRY.getList("EMPLOYEE");
+
         department_masterList = App.COLLECTIONS_REGISTRY.getList("DEPARTMENT");
+        employeeFilteredList = new FilteredList<>(employee_masterList, p -> true);
 
         managerList = new FilteredList<>(employee_masterList, employeee -> {
             return employeee.getJob() == Job.PRESIDENT || employeee.getJob() == Job.MANAGER;
         });
+
         managerField.setButtonCell(new MANAGER_CELL());
         managerField.setCellFactory(cell -> new MANAGER_CELL());
         managerField.setItems(managerList);
@@ -157,11 +166,11 @@ public class RootController extends FXController {
         departmentColumn.setCellFactory(cell -> new Employee.DEPARTEMENT_TABLECELL());
         departmentColumn.setCellValueFactory(cell -> cell.getValue().departmentProperty());
 
-        employeeTable.setItems(employee_masterList);
+        employeeTable.setItems(employeeFilteredList);
     }
 
     @Override
-    protected void load_fields() {
+    protected void load_bindings() {
     }
 
     @Override
