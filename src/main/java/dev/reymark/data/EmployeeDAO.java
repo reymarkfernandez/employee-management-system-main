@@ -31,7 +31,7 @@ public class EmployeeDAO {
             Employee manager = new Employee(crs.getString("manager_id"));
             LocalDate hireDate = CoreDateUtils.parse(
                     crs.getString("hire_date"),
-                     "yyyy-MM-dd");
+                    "yyyy-MM-dd");
             long salary = crs.getLong("salary");
             long commission = crs.getLong("commission");
             Department department = departmentlist.stream()
@@ -51,7 +51,8 @@ public class EmployeeDAO {
         return null;
 
     }
-     private static DBParam[] paramList(Employee employee) {
+
+    private static DBParam[] paramList(Employee employee) {
         List<DBParam> paramList = new LinkedList<>();
         paramList.add(new DBParam(Types.VARCHAR, "emp_id", employee.getEmpID()));
         paramList.add(new DBParam(Types.VARCHAR, "emp_name", employee.getName()));
@@ -66,14 +67,13 @@ public class EmployeeDAO {
 
     }
 
-
     public static List<Employee> getEmployeeList() {
         CachedRowSet crs = DB.select_all(TABLE);
         List<Employee> list = new LinkedList<>();
 
         try {
-             while (crs.next()) {
-                Employee employee = data(crs); 
+            while (crs.next()) {
+                Employee employee = data(crs);
                 if (employee != null)
                     list.add(employee);
 
@@ -85,10 +85,10 @@ public class EmployeeDAO {
         list.forEach(employee -> {
             String manager_id = employee.getManager().getEmpID();
             if (!manager_id.isEmpty())
-            employee.setManager(
-                    list.stream()
-                            .filter(e -> e.getEmpID().equals(manager_id))
-                            .findFirst().get());
+                employee.setManager(
+                        list.stream()
+                                .filter(e -> e.getEmpID().equals(manager_id))
+                                .findFirst().get());
             employee.rebaseline();
 
         });
@@ -100,4 +100,14 @@ public class EmployeeDAO {
 
         DB.insert(TABLE, paramList(employee));
     }
+
+    public static void update(Employee employee) {
+        DB.update(TABLE, new DBParam(Types.VARCHAR, "emp_id", employee.getEmpID()),
+                paramList(employee));
+    }
+
+    public static void delete(Employee employee) {
+        DB.delete(TABLE, new DBParam(Types.VARCHAR, "emp_id", employee.getEmpID()));
+    }
+
 }

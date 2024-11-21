@@ -13,7 +13,9 @@ public class RootLoader extends FXLoader {
 
             RootController controller = loader.getController();
             App.CONTROLLER_REGISTRY.register("backup", controller);
-            controller.load();
+            controller
+            .addParameter("SCENE", scene)
+            .load();
     }
 
 }

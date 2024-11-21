@@ -95,8 +95,8 @@
                   <Button mnemonicParsing="false" onAction="#handleSearchEmployee" prefHeight="36.0" prefWidth="156.0" text="Search" GridPane.rowIndex="1" />
                   <HBox prefHeight="52.0" prefWidth="159.0" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="101.0" text="Update" />
-                        <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="79.0" text="Delete" />
+                        <Button mnemonicParsing="false" onAction="#handleUpdateEmployee" prefHeight="36.0" prefWidth="101.0" text="Update" />
+                        <Button mnemonicParsing="false" onAction="#handleDeleEmployee" prefHeight="36.0" prefWidth="79.0" text="Delete" />
                      </children>
                      <padding>
                         <Insets top="10.0" />

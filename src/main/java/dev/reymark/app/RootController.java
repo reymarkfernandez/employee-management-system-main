@@ -1,6 +1,5 @@
 package dev.reymark.app;
 
-
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -16,6 +15,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -23,6 +24,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 
 public class RootController extends FXController {
     @FXML
@@ -61,11 +63,11 @@ public class RootController extends FXController {
         Collections.sort(employee_masterList, Comparator.comparing(Employee::getEmpID));
         int id_int = Integer.parseInt(employee_masterList.getLast().getEmpID()) + 1;
         String emp_id = Integer.toString(id_int);
-        Employee employee = new Employee(emp_id, 
-                    nameField.getText(), 
-                    jobField.getValue(), 
-                    managerField.getValue(), 
-                    departmentField.getValue());
+        Employee employee = new Employee(emp_id,
+                nameField.getText(),
+                jobField.getValue(),
+                managerField.getValue(),
+                departmentField.getValue());
         EmployeeDAO.insert(employee);
         employee_masterList.add(employee);
         reset_newEmployeeField();
@@ -88,6 +90,53 @@ public class RootController extends FXController {
     private void handleSearchAllEmployee() {
         employeeFilteredList.setPredicate(p -> true);
     }
+
+    @FXML
+    private void handleDeleEmployee() {
+        Employee selectedEmployee = employeeTable.getSelectionModel().getSelectedItem();
+        if (selectedEmployee == null) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Employe Delete Error");
+            alert.setHeaderText("Null Selection Error Occcured");
+            alert.setContentText("No employee selected from table. Must select employee to delete");
+            alert.initOwner(scene.getWindow());
+            alert.show();
+            return;
+
+        }
+
+        if (employee_masterList.stream().anyMatch(e -> {
+            return e.getManager().getEmpID().equals(selectedEmployee.getEmpID());
+        })) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Employe Delete Error");
+            alert.setHeaderText("Employee Currently in Use");
+            alert.setContentText("Employee is used as manager. Must delete employees under management first.");
+            alert.initOwner(scene.getWindow());
+            alert.show();
+            return;
+
+        }
+        employee_masterList.remove(selectedEmployee);
+        EmployeeDAO.delete(selectedEmployee);
+    }
+
+    @FXML
+    private void handleUpdateEmployee() {
+        Employee selectedEmployee = employeeTable.getSelectionModel().getSelectedItem();
+        if (selectedEmployee == null) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Employe Delete Error");
+            alert.setHeaderText("Null Selection Error Occcured");
+            alert.setContentText("No employee selected from table. Must select employee to delete");
+            alert.initOwner(scene.getWindow());
+            alert.show();
+            return;
+        } 
+
+    }
+
+    private Scene scene;
 
     private ObservableList<Department> department_masterList;
     private ObservableList<Employee> employee_masterList;
@@ -112,6 +161,7 @@ public class RootController extends FXController {
 
     @Override
     protected void load_fields() {
+        scene = (Scene) getParameter("SCENE");
         employee_masterList = App.COLLECTIONS_REGISTRY.getList("EMPLOYEE");
 
         department_masterList = App.COLLECTIONS_REGISTRY.getList("DEPARTMENT");
