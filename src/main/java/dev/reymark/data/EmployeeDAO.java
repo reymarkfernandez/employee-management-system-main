@@ -102,9 +102,11 @@ public class EmployeeDAO {
     }
 
     public static void update(Employee employee) {
-        DB.update(TABLE, new DBParam(Types.VARCHAR, "emp_id", employee.getEmpID()),
-                paramList(employee));
+        DB.update(TABLE,
+         new DBParam(Types.VARCHAR, "emp_id", employee.getEmpID()),
+         new DBParam(Types.VARCHAR, "manager_id", employee.getManager().getEmpID()));
     }
+
 
     public static void delete(Employee employee) {
         DB.delete(TABLE, new DBParam(Types.VARCHAR, "emp_id", employee.getEmpID()));

@@ -133,6 +133,9 @@ public class RootController extends FXController {
             alert.show();
             return;
         } 
+        
+        selectedEmployee.setManager(newManagerField.getValue());
+        EmployeeDAO.update(selectedEmployee);
 
     }
 
@@ -150,8 +153,7 @@ public class RootController extends FXController {
             super.updateItem(item, empty);
 
             if (item == null || empty) {
-                setText(null);
-                setGraphic(null);
+                setGraphic(new Label("SELECT MANAGER"));
                 return;
             }
             setGraphic(new Label(item.getName()));
@@ -177,7 +179,8 @@ public class RootController extends FXController {
 
         newManagerField.setButtonCell(new MANAGER_CELL());
         newManagerField.setCellFactory(cell -> new MANAGER_CELL());
-        newManagerField.setItems(managerList);
+        newManagerField.getItems().add(null);
+        newManagerField.getItems().addAll(managerList);
 
         ObservableList<Job> joblList = FXCollections.observableArrayList(Job.values());
         if (employee_masterList.stream().anyMatch(e -> e.getJob().equals(Job.PRESIDENT))) {
@@ -238,7 +241,15 @@ public class RootController extends FXController {
         filteredEmployeeField.textProperty().addListener((o, ov, nv) -> {
             filteredEmployeeField.pseudoClassStateChanged(Styles.STATE_DANGER, false);
         });
+        newManagerField.valueProperty().addListener((o, ov, nv) -> {
+          newManagerField.pseudoClassStateChanged(Styles.STATE_DANGER, false);
 
+        });
+
+        employeeTable.getSelectionModel().selectedItemProperty().addListener((o, ov, nv) -> {
+          newManagerField.setValue(nv.getManager());
+        });
+    
     }
 
     private void reset_newEmployeeField() {
